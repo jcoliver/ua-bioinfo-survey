@@ -46,8 +46,10 @@ save(results, file = "output/results-processed.RData")
 # happens in reverse order)
 # install.packages("plyr")
 library("plyr")
-empty.counts <- matrix(data = NA, nrow = length(colnames(results[, c(4:15)])), ncol = 5)
-topic.names <- colnames(results[, c(4:15)])
+
+topic.columns <- which(substr(colnames(results), 1, 6) == "topic.")
+topic.names <- colnames(results[, topic.columns])
+empty.counts <- matrix(data = NA, nrow = length(topic.names), ncol = 5)
 topic.counts <- data.frame(empty.counts, row.names = topic.names)
 colnames(topic.counts) <- c("pref.1", "pref.2", "pref.3", "pref.4", "pref.5")
 
@@ -63,3 +65,4 @@ topic.counts <- topic.counts[order(topic.counts$pref.5, decreasing = TRUE),]
 
 topics.decr.order <- factor(rownames(topic.counts))
 save(topics.decr.order, file = "output/topics-ordered-decr.RData")
+
