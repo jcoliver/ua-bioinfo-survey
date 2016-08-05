@@ -17,6 +17,7 @@ library("reshape2")
 topics.incr.order <- as.character(rev(topics.decr.order[topics.decr.order != "pub.access"]))
 
 # Pull out the topics columns
+colnames(results) <- gsub(pattern = "topic.", replacement = "", x = colnames(results))
 topics <- results[, topics.incr.order]
 
 ################################################################################
