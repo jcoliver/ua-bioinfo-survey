@@ -10,11 +10,18 @@ load(file = "output/results-processed.RData")
 # install.packages("plyr")
 library("plyr")
 
+# Pull out training topic columns
+topic.columns <- grep(pattern = "topic.", x = colnames(results))
+topics <- results[, topic.columns]
+
+# Remove "topic." prefix
+colnames(topics) <- gsub(pattern = "topic.", replacement = "", x = colnames(topics))
+
 # Find out counts for each of the five levels
-topics <- results[, c(4:15)]
+# topics <- results[, c(4:15)]
 counts <- data.frame(row.names = c("Not interested", "2", "3", "4", "Very interested"))
 for (curr.topic in colnames(topics)) {
-  topic.counts <- count(df = topics, vars = curr.topic)
+  topic.counts <- plyr::count(df = topics, vars = curr.topic) # in case dplyr is loaded
   counts[, curr.topic] <- topic.counts$freq
 }
 
