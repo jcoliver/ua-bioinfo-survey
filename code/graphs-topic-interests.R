@@ -16,10 +16,8 @@ colnames(training) <- gsub(pattern = "topic.", replacement = "", x = colnames(tr
 
 # install.packages("ggplot2")
 # install.packages("tidyr")
-# install.packages("dplyr")
 library("ggplot2")
 library("tidyr")
-library("dplyr")
 # Convert to wide format for easy summarizing
 # training.topic  score 
 # entrez          5
