@@ -39,7 +39,7 @@ training.wide$training.topic <- factor(training.wide$training.topic, levels <- r
 training.wide$score <- factor(training.wide$score, levels = c(1, 2, 3, 4, 5))
 
 pdf(file = "output/figure-topic-interests-bar.pdf", useDingbats = FALSE)
-ggplot(data = training.wide, 
+bar.plot <- ggplot(data = training.wide, 
        aes(x = training.wide$training.topic,
            fill = as.factor(training.wide$score))) + # coerce int to factor
   geom_bar(width = 0.9, color = "white", size = 3) + 
@@ -52,4 +52,5 @@ ggplot(data = training.wide,
   guides(fill = "none") + # Removes the legend
   theme_bw() + 
   theme(text = element_text(family = "Times"))
+print(bar.plot)
 dev.off()

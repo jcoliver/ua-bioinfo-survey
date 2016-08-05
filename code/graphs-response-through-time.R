@@ -26,17 +26,18 @@ reminders.df$end <- reminders.df$start + reminder.window * 60 * 60
 # install.packages("ggplot2")
 library("ggplot2")
 pdf(file = "output/figure-response-through-time.pdf", useDingbats = FALSE)
-ggplot() +
-  geom_rect(data = reminders.df, 
-            aes(xmin = start, xmax = end,
-                ymin = -Inf, ymax = Inf),
-            alpha = 0.4) +
-  geom_line(data = through.time, aes(start.time, count)) +
-  ylab(label = "# Completed Surveys") +
-  xlab(label = "Date") +
-  theme_bw() +
-  theme(axis.text = element_text(size = 12),
-        axis.title = element_text(size = 14, face = "bold"),
-        text = element_text(family = "Times")) +
-  ggtitle(label = paste0("Window: ", reminder.window, " hours"))
+  time.plot <- ggplot() +
+    geom_rect(data = reminders.df, 
+              aes(xmin = start, xmax = end,
+                  ymin = -Inf, ymax = Inf),
+              alpha = 0.4) +
+    geom_line(data = through.time, aes(start.time, count)) +
+    ylab(label = "# Completed Surveys") +
+    xlab(label = "Date") +
+    theme_bw() +
+    theme(axis.text = element_text(size = 12),
+          axis.title = element_text(size = 14, face = "bold"),
+          text = element_text(family = "Times")) +
+    ggtitle(label = paste0("Window: ", reminder.window, " hours"))
+  print(time.plot)
 dev.off()

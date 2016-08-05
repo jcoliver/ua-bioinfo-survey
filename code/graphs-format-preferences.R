@@ -44,7 +44,7 @@ format.colors <- c("#AB0520", "#0C234B", "#558618", "#F19E1F", "#8CD9E3", "#B755
 # install.packages("ggplot2")
 library("ggplot2")
 pdf(file = "output/figure-format-preferences-bar.pdf", useDingbats = FALSE, width = 7, height = 3.5)
-  ggplot(data = format.wide,
+  bar.plot <- ggplot(data = format.wide,
          aes(x = format.name, fill = format.name)) +
     geom_bar(position = "dodge", color = "black", lwd = 0.2) + 
     facet_grid(. ~ position) + 
@@ -55,4 +55,5 @@ pdf(file = "output/figure-format-preferences-bar.pdf", useDingbats = FALSE, widt
     theme(axis.ticks = element_blank(), 
           axis.text.x = element_blank(),
           text = element_text(family = "Times"))
+  print(bar.plot)
 dev.off()

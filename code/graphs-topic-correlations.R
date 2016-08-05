@@ -53,7 +53,7 @@ cor.p.melt$value <- -log10(cor.p.melt$value)
 # All are significant at this level, as maximum p value is
 # 0.00022 [or -log10(0.00022) = 3.658 (higher than minimum)
 
-ggplot(data = cor.p.melt, aes(x = Var1, y = Var2, fill = value)) + 
+p.heatmap <- ggplot(data = cor.p.melt, aes(x = Var1, y = Var2, fill = value)) + 
   ggtitle(label = expression("-log"[10]*"(P-values)")) +
   geom_tile() + 
   scale_fill_gradient(low = "#EEEEEE", high = "#111111") + 
@@ -62,12 +62,13 @@ ggplot(data = cor.p.melt, aes(x = Var1, y = Var2, fill = value)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
         text = element_text(family = "Times"))
+print(p.heatmap)
 
 # Spearman rho values
 cor.rho.melt <- melt(cor.mat.rho)
 cor.rho.melt <- na.omit(cor.rho.melt)
 
-ggplot(data = cor.rho.melt, aes(x = Var1, y = Var2, fill = value)) + 
+rho.heatmap <- ggplot(data = cor.rho.melt, aes(x = Var1, y = Var2, fill = value)) + 
   ggtitle(label = "Spearman correlation coefficient") +
   geom_tile() + 
   scale_fill_gradient(low = "#EEEEEE", high = "#111111") + 
@@ -76,4 +77,6 @@ ggplot(data = cor.rho.melt, aes(x = Var1, y = Var2, fill = value)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5),
         text = element_text(family = "Times"))
+print(rho.heatmap)
+
 dev.off()
