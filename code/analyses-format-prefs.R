@@ -6,41 +6,47 @@
 rm(list = ls())
 load(file = "output/results-processed.RData")
 
-# Extract & format data as needed
-formats.df <- results[,16:21]
+# Pull out training format columns
+format.columns <- grep(pattern = "training.", x = colnames(results))
+
+# Don't want training.na
+training.na <- grep(pattern = "training.na", x = colnames(results))
+format.columns <- format.columns[which(format.columns != training.na)]
+formats <- results[, format.columns]
+
 # Remove the "training." prefix from column names for easier interpretation 
 # of output
-colnames(formats.df) <- gsub("training.", "", colnames(formats.df))
+colnames(formats) <- gsub("training.", "", colnames(formats))
 
 # install.packages("tidyr")
 library("tidyr")
-format.long <- gather(data = formats.df,
+format.wide <- gather(data = formats,
                       key = format.name, 
                       value = pref)
 
 # Drop NA
-format.long <- format.long[!is.na(format.long$pref), ]
-format.long$format.name <- factor(format.long$format.name)
+format.wide <- format.wide[!is.na(format.wide$pref), ]
+format.wide$format.name <- factor(format.wide$format.name)
 
 ################################################################################
 # Kruskal Wallis omnibus test for an affect of format on preference
 # see http://www.ats.ucla.edu/stat/r/whatstat/whatstat.htm#kw
-format.kw <- kruskal.test(x = format.long$pref, g = format.long$format.name)
+format.kw <- kruskal.test(x = format.wide$pref, g = format.wide$format.name)
 
 # Kruskal-Wallis rank sum test
 # 
-# data:  format.long$pref and as.factor(format.long$format.name)
+# data:  format.wide$pref and as.factor(format.wide$format.name)
 # Kruskal-Wallis chi-squared = 32.901, df = 5, p-value = 3.938e-06
 
 ################################################################################
 # Logistic regression with workshop as reference
 # see http://www.r-bloggers.com/logistic-regression-and-categorical-covariates/
 # Make "workshops" the first level, and thus used as reference in glm
-format.long$format.name <- relevel(x = format.long$format.name, ref = "workshops")
-logit.workshops.ref <- glm(pref ~ format.name, data = format.long, family = "binomial")
+format.wide$format.name <- relevel(x = format.wide$format.name, ref = "workshops")
+logit.workshops.ref <- glm(pref ~ format.name, data = format.wide, family = "binomial")
 summary(logit.workshops.ref)
 # Call:
-#   glm(formula = pref ~ format.name, family = "binomial", data = format.long)
+#   glm(formula = pref ~ format.name, family = "binomial", data = format.wide)
 # 
 # Deviance Residuals: 
 #   Min       1Q   Median       3Q      Max  

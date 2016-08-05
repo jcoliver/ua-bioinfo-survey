@@ -7,6 +7,7 @@ rm(list = ls())
 load(file = "output/results-processed.RData")
 
 ################################################################################
-results$topic.sum <- apply(X = results[, c(4:15)], MARGIN = 1, FUN = sum)
+topic.columns <- grep(pattern = "topic.", x = colnames(results))
+results$topic.sum <- apply(X = results[, topic.columns], MARGIN = 1, FUN = sum)
 hist(results$topic.sum, xlab = "Sum of topic preference scores", main = "")
 # Tri-modal

@@ -10,8 +10,12 @@ load(file = "output/results-processed.RData")
 # Kruskal Wallis test
 # install.packages("tidyr")
 library("tidyr")
-resource.cols <- which(substr(x = colnames(results), 1, 5) == "freq.")
+
+# Identify & pull out resource columns
+resource.cols <- grep(pattern = "freq.", x = colnames(results))
 resource.freq <- results[, resource.cols]
+
+# Remove "freq." prefix
 colnames(resource.freq) <- gsub(pattern = "freq.", replacement = "", x = colnames(resource.freq))
 resource.freq$position <- results$position
 resource.long <- resource.freq %>% gather(key = resource, value = freq, -position)
