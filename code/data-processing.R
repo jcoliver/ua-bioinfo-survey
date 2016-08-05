@@ -47,7 +47,11 @@ save(results, file = "output/results-processed.RData")
 # install.packages("plyr")
 library("plyr")
 
-topic.columns <- which(substr(colnames(results), 1, 6) == "topic.")
+# Identify those columns of training topics
+topic.columns <- grep(pattern = "topic.", x = colnames(results))
+
+# Remove "topic." prefix
+colnames(results) <- gsub(pattern = "topic.", replacement = "", x = colnames(results))
 topic.names <- colnames(results[, topic.columns])
 empty.counts <- matrix(data = NA, nrow = length(topic.names), ncol = 5)
 topic.counts <- data.frame(empty.counts, row.names = topic.names)
@@ -63,6 +67,6 @@ for (curr.topic in topic.names) {
 topic.counts <- topic.counts[order(topic.counts$pref.1, decreasing = FALSE),]
 topic.counts <- topic.counts[order(topic.counts$pref.5, decreasing = TRUE),]
 
-topics.decr.order <- factor(rownames(topic.counts))
+topics.decr.order <- factor(rownames(topic.counts), levels = rownames(topic.counts))
 save(topics.decr.order, file = "output/topics-ordered-decr.RData")
 

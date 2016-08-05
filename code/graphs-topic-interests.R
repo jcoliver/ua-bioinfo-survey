@@ -8,7 +8,11 @@ load(file = "output/results-processed.RData")
 
 ################################################################################
 # Stacked bar chart for topic interest levels
-training <- results[,4:15]
+topic.columns <- grep(pattern = "topic.", x = colnames(results))
+training <- results[, topic.columns]
+
+# Remove "topic." prefix
+colnames(training) <- gsub(pattern = "topic.", replacement = "", x = colnames(training))
 
 # install.packages("ggplot2")
 # install.packages("tidyr")
