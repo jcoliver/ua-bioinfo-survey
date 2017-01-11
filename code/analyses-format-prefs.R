@@ -29,7 +29,7 @@ format.wide <- format.wide[!is.na(format.wide$pref), ]
 format.wide$format.name <- factor(format.wide$format.name)
 
 ################################################################################
-# Kruskal Wallis omnibus test for an affect of format on preference
+# Kruskal Wallis omnibus test for an effect of format on preference
 # see http://www.ats.ucla.edu/stat/r/whatstat/whatstat.htm#kw
 format.kw <- kruskal.test(x = format.wide$pref, g = format.wide$format.name)
 
