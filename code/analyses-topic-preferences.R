@@ -100,3 +100,18 @@ if (any(pos.olr$p.values < pos.olr$adj.p, na.rm = TRUE)) {
 } else {
   print("No significant results in ordered logistic regression")
 }
+
+# Calculate mean scores & SE (s/(n^1/2))for each position
+positions <- levels(topics.wide$position)
+pos.info <- data.frame("position" = positions, "mean" = NA, "se" = NA)
+for (p in 1:length(positions)) {
+  pos.prefs <- as.numeric(topics.wide$preference[topics.wide$position == positions[p]])
+  pos.prefs <- na.omit(pos.prefs)
+  pos.info$mean[p] <- mean(pos.prefs)
+  pos.info$se[p] <- sd(pos.prefs) / sqrt(length(pos.prefs))
+}
+
+# position     mean         se
+# 1  Faculty 2.616162 0.07799989
+# 2    Staff 3.672222 0.09514292
+# 3  Student 2.996032 0.09214004
