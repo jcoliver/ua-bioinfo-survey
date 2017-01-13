@@ -39,13 +39,14 @@ kw.crit.val <- 0.05 # determines whether or not to run olr...need to Bonferroni 
 
 for (p in 1:levels(topics.wide$position)) {
   # Subset data
-  pos.data <- topics.wide[topics.wide$position == levels(topics.wide$position)[p], ]
+  current.level <- levels(topics.wide$position[p])
+  pos.data <- topics.wide[topics.wide$position == current.level, ]
   # KW Test
   kw.topic <- kruskal.test(x = pos.data$preference, g = pos.wide$topic)
 
   # Need to check p-value... should just be kw.topic@p.value
   if (kw.topic$p.value < kw.crit.val) {
-    print(paste0("Running ordinal logistic regression on ", levels(topics.wide$position)[p]))
+    message(paste0("Running ordinal logistic regression on ", current.level))
     # olr
     topic.olr <- iterate.olr(response = "preference", predictor = "topic", data = pos.data)
     
@@ -53,8 +54,10 @@ for (p in 1:levels(topics.wide$position)) {
     if (any(topic.olr$p.values < topic.olr$adj.p, na.rm = TRUE)) {
       print(topic.olr)
     } else {
-      print("No significant results in ordered logistic regression for TOPIC")
+      message("No significant results in ordered logistic regression for TOPIC")
     }
     
+  } else {
+    message(paste0("KW test not significant for ", current.level, "(p = ", kw.topic$p.value, ")"))
   }
 }
