@@ -45,7 +45,9 @@ save(results, file = "output/results-processed.RData")
 # Sorted by how many 5s then by reverse order of how many 1s (actual processing 
 # happens in reverse order)
 # install.packages("plyr")
-library("plyr")
+if (!require(package = "plyr")){
+  stop("Cannot proceed with data processing, package 'plyr' not installed.")
+}
 
 # Identify those columns of training topics
 topic.columns <- grep(pattern = "topic.", x = colnames(results))
