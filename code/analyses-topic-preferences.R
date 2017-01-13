@@ -5,6 +5,7 @@
 
 rm(list = ls())
 load(file = "output/results-processed.RData")
+source(file = "functions/iterate.olr.R")
 
 ################################################################################
 # SETUP
@@ -29,30 +30,6 @@ topics.wide <- topics %>% gather(key = topic,
                                  -position)
 topics.wide$topic <- factor(x = topics.wide$topic)
 topics.wide$preference <- ordered(x = topics.wide$preference, levels = c(1, 2, 3, 4, 5))
-
-################################################################################
-# A function to run ordinal logistic regression for each level in a factor
-iterate.olr <- function(response, predictor, data) {
-  library("MASS")
-  orig.levels <- levels(data[, predictor])
-  values.matrix <- matrix(NA, length(orig.levels), length(orig.levels))
-  rownames(values.matrix) <- colnames(values.matrix) <- orig.levels
-  olr.results <- list("p.values" = values.matrix, "t.values" = values.matrix)
-  
-  for (i in 1:length(orig.levels)) {
-    data[, predictor] <- relevel(x = data[, predictor], ref = orig.levels[i])
-    olr <- polr(formula = data[, response] ~ data[, predictor], Hess = TRUE)
-    olr.coeff <- coef(summary(olr))
-    olr.p <- pnorm(abs(olr.coeff[, "t value"]), lower.tail = FALSE) * 2
-    olr.coeff <- cbind(olr.coeff, "p.value" = olr.p)
-    olr.results[["p.values"]][levels(data[, predictor])[-1], i] <- olr.coeff[1:length(x = orig.levels) - 1, "p.value"]
-    olr.results[["t.values"]][levels(data[, predictor])[-1], i] <- olr.coeff[1:length(x = orig.levels) - 1, "t value"]
-  }
-
-  adj.p <- 0.05/((length(orig.levels) * (length(orig.levels) - 1)) / 2)
-  olr.results$adj.p <- adj.p
-  return(olr.results)  
-}
 
 ################################################################################
 # Test for differences among TOPICS
