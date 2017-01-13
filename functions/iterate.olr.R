@@ -1,11 +1,3 @@
-#' TODO: Consider making this flexible so data is optional
-#' Currently forces all three to be added:
-#' data$response
-#' data$predictor
-#' But should have flexibility to add vectors themselves
-#' response (a vector)
-#' predictor (a vector)
-
 #' Run ordinal logistic regression on each level of a factor
 #' 
 #' Performs ordinal logistic regression using the \code{polr} function from the 
@@ -27,11 +19,22 @@
 #' \dontrun{
 #'   topic.olr <- iterate.olr(response = "preference", predictor = "topic", data = topics.wide)
 #' }
-iterate.olr <- function(response, predictor, data) {
+iterate.olr <- function(response, predictor, data = NULL) {
   if (!require(package = "MASS")){
     stop("Could not run iterate.olr, package 'MASS' not found.")
   }
 
+  if (is.null(data)) {
+    if (length(response) != length(predictor)) {
+      stop("'response' and 'predictor' objects passed to iterate.olr must be of the same length.")
+    }
+    orig.response <- response
+    orig.predictor <- predictor
+    response = "response"
+    predictor = "predictor"
+    data <- data.frame(response = orig.response, predictor = orig.predictor)
+  }
+  
   orig.levels <- levels(data[, predictor])
   values.matrix <- matrix(NA, length(orig.levels), length(orig.levels))
   rownames(values.matrix) <- colnames(values.matrix) <- orig.levels
