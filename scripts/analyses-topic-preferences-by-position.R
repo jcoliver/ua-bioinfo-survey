@@ -36,6 +36,7 @@ topics.wide$preference <- ordered(x = topics.wide$preference, levels = c(1, 2, 3
 # (2) ordinal logistic regression over all topics
 
 kw.crit.val <- 0.05 # determines whether or not to run olr...need to Bonferroni this?
+kw.results <- data.frame(position = levels(topics.wide$position), kw.stat = NA, kw.df = NA, kw.p = NA)
 
 for (p in 1:length(levels(topics.wide$position))) {
   # Subset data
@@ -44,6 +45,10 @@ for (p in 1:length(levels(topics.wide$position))) {
   # KW Test
   kw.topic <- kruskal.test(x = pos.data$preference, g = pos.data$topic)
 
+  kw.results$kw.stat[p] <- kw.topic$statistic
+  kw.results$kw.df[p] <- kw.topic$parameter
+  kw.results$kw.p[p] <- kw.topic$p.value
+  
   # Need to check p-value... should just be kw.topic@p.value
   if (kw.topic$p.value < kw.crit.val) {
     message(paste0("Running ordinal logistic regression on ", 
@@ -64,7 +69,7 @@ for (p in 1:length(levels(topics.wide$position))) {
   } else {
     message(paste0("KW test not significant for ", 
                    current.level, 
-                   "(p = ", 
+                   " (p = ", 
                    round(x = kw.topic$p.value, digits = 4), 
                    ")"))
   }
@@ -73,3 +78,9 @@ for (p in 1:length(levels(topics.wide$position))) {
 # KW test not significant for Faculty(p = 0.7617)
 # KW test not significant for Staff(p = 0.3131)
 # KW test not significant for Student(p = 0.3155)
+
+kw.results
+# position   kw.stat kw.df      kw.p
+# 1  Faculty  7.448007    11 0.7617299
+# 2    Staff 12.704722    11 0.3130619
+# 3  Student 12.669113    11 0.3155009
