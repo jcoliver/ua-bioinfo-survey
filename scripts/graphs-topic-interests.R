@@ -36,6 +36,9 @@ training.wide$training.topic <- factor(training.wide$training.topic, levels <- r
 # Re-order the score factor to set order of plotting
 training.wide$score <- factor(training.wide$score, levels = c(1, 2, 3, 4, 5))
 
+# Number of responses (for axis labeling)
+num.responses <- nrow(results)
+
 pdf(file = "output/figure-topic-interests-bar.pdf", useDingbats = FALSE)
 bar.plot <- ggplot(data = training.wide, 
        aes(x = training.wide$training.topic,
@@ -46,6 +49,7 @@ bar.plot <- ggplot(data = training.wide,
                   start = 0.9, end = 0.2) +
   ylab(label = "Responses") +
   xlab(label = "Topic") + 
+  scale_y_continuous(breaks = c(0, 40, 60, num.responses)) + # Remember we flip the axis, so "Responses" is on the horizontal
   coord_flip() +
   guides(fill = "none") + # Removes the legend
   theme_bw() + 
