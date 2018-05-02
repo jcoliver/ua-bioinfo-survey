@@ -1,9 +1,11 @@
 # ua-bioinfo-survey
 
+The code in this repository is associated with the paper, [Bioinformatic training needs at a health sciences campus](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0179581).
+
 ## Directories
 
 | Directory Name | Description |
-|--------------- |------------------------------------------------------------------------|
+|--------------- |:------------------------------------------------------------------------|
 | code           | scripts for running analyses and producing graphics|
 | data           | raw data from survey |
 | output         | product of code, such as formatted data and pdf figures; contents not under version control|
@@ -12,7 +14,7 @@
 ### code
 
 | Script name   | Description |
-|---------------|------------------------------------------------------------------------|
+|:---------------|:------------------------------------------------------------------------|
 | analyses-bioinfo-interest.R | general assessment of interest in bioinformatics |
 | analyses-demographics.R | basic demographics of respondents |
 | analyses-format-prefs.R | test for significant preference in training format|
@@ -33,7 +35,7 @@
 ### data
 
 | Filename      | Description |
-|---------------|------------------------------------------------------------------------|
+|:---------------|:------------------------------------------------------------------------|
 | survey-results-processed.txt | tab-delimited text file of survey results, some cleaning of Qualtrics output occurred (e.g. standardizing college names).|
 
 There is some additional processing by `code/data-processing.R`, which produces 
@@ -46,8 +48,7 @@ original, raw data).
 
 The following packages are used in one or more scripts and should be installed 
 before attempting to run this code:
-* dplyr
-* ggplot
-* plyr
-* MASS
-* tidyr
+
+```r
+install.packages(c('dplyr', 'ggplot', 'plyr', 'MASS', 'tidyr'))
+```
