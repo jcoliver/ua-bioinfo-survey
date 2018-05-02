@@ -1,13 +1,13 @@
-#README for ua-bioinfo-survey
+# README for ua-bioinfo-survey
 
-##Directories
+## Directories
 * code : scripts for running analyses and producing graphics
 * data : raw data from survey
 * output : product of code, such as formatted data and pdf figures; contents not 
 under version control
 
 --------------------------------------------------------------------------------
-###code
+## #code
 * analyses-bioinfo-interest.R : general assessment of interest in 
 bioinformatics
 * analyses-demographics.R : basic demographics of respondents
@@ -38,7 +38,7 @@ topics
 * graphs-topic-interests.R : graphing topic interest levels
 
 --------------------------------------------------------------------------------
-###data
+### data
 * survey-results-processed.txt : tab-delimited text file of survey results, some 
 cleaning of Qualtrics output occurred (e.g. standardizing college names). There 
 is some additional processing by code/data-processing.R, which produces 
@@ -46,7 +46,7 @@ a data frame called `results`, stored in output/results-processed.RData. That
 file should be loaded for all downstream analyses (rather than using the 
 original, raw data).
 
-##Additional packages
+## Additional packages
 The following packages are used in one or more scripts and should be installed 
 before attempting to run this code:
 * dplyr
